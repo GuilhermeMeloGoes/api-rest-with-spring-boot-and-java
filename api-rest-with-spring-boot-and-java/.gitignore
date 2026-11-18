@@ -6,17 +6,11 @@ target/
 
 ### STS ###
 .apt_generated
-.classpath
-.factorypath
-.project
-.settings
 .springBeans
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
 *.iws
-*.iml
 *.ipr
 
 ### NetBeans ###
@@ -62,3 +56,33 @@ replay_pid*
 .env.*
 !.env.example
 !.env.template
+
+# Dependencies
+/node_modules
+
+# SSH keys
+*.pem
+*.ppk
+
+# Merge files
+*.bak
+
+# Eclipse files
+bin/
+blog/bin/
+**/.tern-project
+**/.project
+**/.classpath
+**/.settings/
+**/.factorypath
+
+# IntelliJ files
+**/*.iml
+**/.idea/
+**/.gradle
+
+# Other files
+*.ini
+
+# Eclipse metadata
+/.metadata/
