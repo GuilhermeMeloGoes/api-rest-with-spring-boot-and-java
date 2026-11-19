@@ -23,18 +23,18 @@ public class NumberConverterValidate {
         return number.matches("[-+]?[0-9]*\\.?[0-9]+");
     }
 
-    public static boolean isNullOrEmpty(String strNumber) {
-        return strNumber == null || strNumber.isEmpty();
-    }
-
-    public static String replace(String strNumber) {
-        return strNumber.replace(",", ".");
-    }
-
     public static void validateNumbers(String numberOne, String numberTwo) {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
             throw new UnsupportedMathOperationException("Please set a numeric value!");
         }
+    }
+
+    private static boolean isNullOrEmpty(String strNumber) {
+        return strNumber == null || strNumber.isEmpty();
+    }
+
+    private static String replace(String strNumber) {
+        return strNumber.replace(",", ".");
     }
 
 }
