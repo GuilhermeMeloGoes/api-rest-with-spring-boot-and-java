@@ -1,90 +1,69 @@
 package br.com.guilherme.controllers;
 
 import br.com.guilherme.exceptions.UnsupportedMathOperationException;
+import br.com.guilherme.math.SimpleMath;
+import br.com.guilherme.resquest.converters.NumberConverterValidate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/math")
 public class MathController {
 
+    private final SimpleMath simpleMath = new SimpleMath();
+
     @GetMapping("/sum/{numberOne}/{numberTwo}")
     public Double sum(@PathVariable("numberOne") String numberOne,
                       @PathVariable("numberTwo") String numberTwo) {
-        validateNumbers(numberOne, numberTwo);
-        return convertToDouble(numberOne) + convertToDouble(numberTwo);
+        NumberConverterValidate.validateNumbers(numberOne, numberTwo);
+        return simpleMath.sum(NumberConverterValidate.convertToDouble(numberOne), NumberConverterValidate.convertToDouble(numberTwo));
     }
 
     @GetMapping("/subtraction/{numberOne}/{numberTwo}")
     public Double subtraction(@PathVariable("numberOne") String numberOne,
                               @PathVariable("numberTwo") String numberTwo) {
-        validateNumbers(numberOne, numberTwo);
-        return convertToDouble(numberOne) - convertToDouble(numberTwo);
+        NumberConverterValidate.validateNumbers(numberOne, numberTwo);
+        return simpleMath.subtraction(NumberConverterValidate.convertToDouble(numberOne), NumberConverterValidate.convertToDouble(numberTwo));
     }
 
     @GetMapping("/multiply/{numberOne}/{numberTwo}")
     public Double multiply(@PathVariable("numberOne") String numberOne,
                            @PathVariable("numberTwo") String numberTwo) {
-        validateNumbers(numberOne, numberTwo);
-        return convertToDouble(numberOne) * convertToDouble(numberTwo);
+        NumberConverterValidate.validateNumbers(numberOne, numberTwo);
+        return simpleMath.multiply(NumberConverterValidate.convertToDouble(numberOne), NumberConverterValidate.convertToDouble(numberTwo));
     }
 
     @GetMapping("/division/{numberOne}/{numberTwo}")
     public Double division(@PathVariable("numberOne") String numberOne,
                            @PathVariable("numberTwo") String numberTwo) {
-        validateNumbers(numberOne, numberTwo);
+        NumberConverterValidate.validateNumbers(numberOne, numberTwo);
 
-        if (convertToDouble(numberTwo) == 0) {
+        if (NumberConverterValidate.convertToDouble(numberTwo) == 0) {
             throw new UnsupportedMathOperationException("Please enter a dividend value orther than 0!");
         }
-        return convertToDouble(numberOne) / convertToDouble(numberTwo);
+        return simpleMath.division(NumberConverterValidate.convertToDouble(numberOne), NumberConverterValidate.convertToDouble(numberTwo));
     }
 
     @GetMapping("/mean/{numberOne}/{numberTwo}")
     public Double mean(@PathVariable("numberOne") String numberOne,
                        @PathVariable("numberTwo") String numberTwo) {
-        validateNumbers(numberOne, numberTwo);
-        return (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2.0;
+        NumberConverterValidate.validateNumbers(numberOne, numberTwo);
+        return simpleMath.mean(NumberConverterValidate.convertToDouble(numberOne), NumberConverterValidate.convertToDouble(numberTwo));
     }
 
     @GetMapping("/square-root/{number}")
     public Double squareRoot(@PathVariable("number") String number) {
-        if (!isNumeric(number)) {
+        if (!NumberConverterValidate.isNumeric(number)) {
             throw new UnsupportedMathOperationException("Please set a numeric value!");
         }
 
-        return Math.sqrt(convertToDouble(number));
-    }
+        double value = NumberConverterValidate.convertToDouble(number);
 
-    private double convertToDouble(String strNumber) {
-        if (isNullOrEmpty(strNumber)) {
-            throw new UnsupportedMathOperationException("Please provide a non-null and non-empty value");
+        if (value < 0) {
+            throw new UnsupportedMathOperationException(
+                    "Square root of a negative number is not supported!"
+            );
         }
 
-        String number = replace(strNumber);
-        return Double.parseDouble(number);
-    }
-
-    private boolean isNumeric(String strNumber) {
-        if (isNullOrEmpty(strNumber)) {
-            return false;
-        }
-
-        String number = replace(strNumber);
-
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-    }
-
-    private boolean isNullOrEmpty(String strNumber) {
-        return strNumber == null || strNumber.isEmpty();
-    }
-
-    private String replace(String strNumber) {
-        return strNumber.replace(",", ".");
-    }
-
-    private void validateNumbers(String numberOne, String numberTwo) {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationException("Please set a numeric value!");
-        }
+        return simpleMath.squareRoot(NumberConverterValidate.convertToDouble(number));
     }
 }
