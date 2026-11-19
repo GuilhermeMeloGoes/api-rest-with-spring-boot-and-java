@@ -14,27 +14,27 @@ public class MathController {
         return convertToDouble(numberOne) + convertToDouble(numberTwo);
     }
 
-    @GetMapping("/sub/{numberOne}/{numberTwo}")
+    @GetMapping("/subtraction/{numberOne}/{numberTwo}")
     public Double subtraction(@PathVariable("numberOne") String numberOne,
                               @PathVariable("numberTwo") String numberTwo) {
         validateNumbers(numberOne, numberTwo);
         return convertToDouble(numberOne) - convertToDouble(numberTwo);
     }
 
-    @GetMapping("/multi/{numberOne}/{numberTwo}")
+    @GetMapping("/multiply/{numberOne}/{numberTwo}")
     public Double multiply(@PathVariable("numberOne") String numberOne,
                            @PathVariable("numberTwo") String numberTwo) {
         validateNumbers(numberOne, numberTwo);
         return convertToDouble(numberOne) * convertToDouble(numberTwo);
     }
 
-    @GetMapping("/divi/{numberOne}/{numberTwo}")
+    @GetMapping("/division/{numberOne}/{numberTwo}")
     public Double division(@PathVariable("numberOne") String numberOne,
                            @PathVariable("numberTwo") String numberTwo) {
         validateNumbers(numberOne, numberTwo);
 
         if (convertToDouble(numberTwo) == 0) {
-            throw new UnsupportedMathOperationException("Please set a dividend value greater than 0!");
+            throw new UnsupportedMathOperationException("Please enter a dividend value orther than 0!");
         }
         return convertToDouble(numberOne) / convertToDouble(numberTwo);
     }
